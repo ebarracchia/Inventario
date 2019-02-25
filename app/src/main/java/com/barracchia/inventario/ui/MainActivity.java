@@ -191,8 +191,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_SCAN) {
-            if (data.hasExtra("returnCode"))
-                showItem(data.getExtras().getString("returnCode"), true);
+            if (data.hasExtra("returnCode")) {
+                Bundle bundle = data.getExtras();
+                if (bundle != null)
+                    showItem(bundle.getString("returnCode"), true);
+            }
         }
     }
 
@@ -299,37 +302,46 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addItem() {
-        if (!TextUtils.isEmpty(edtCode.getText())) {
-            ItemInventario item = ItemInventario.getByCodigo(String.valueOf(edtCode.getText()));
-            if (item != null) {
-                // Check if duplicated item
-                boolean duplicated = false;
-                for (ItemInventario itemCheck : myList) {
-                    if (item.equals(itemCheck)) {
-                        duplicated = true;
-                        break;
+        // Check if the READ_EXTERNAL_STORAGE permission is already available.
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            // READ_EXTERNAL_STORAGE permission has not been granted.
+            requestReadExternalStoragePermission();
+        } else {
+            if (!TextUtils.isEmpty(edtCode.getText())) {
+                ItemInventario item = ItemInventario.getByCodigo(String.valueOf(edtCode.getText()));
+                if (item != null) {
+                    // Check if duplicated item
+                    boolean duplicated = false;
+                    for (ItemInventario itemCheck : myList) {
+                        if (item.equals(itemCheck)) {
+                            duplicated = true;
+                            break;
+                        }
                     }
-                }
 
-                if (!duplicated) {
-                    myList.add(item);
-                    myItemAdapter.updateItems(myList);
+                    if (!duplicated) {
+                        myList.add(item);
+                        myItemAdapter.updateItems(myList);
+                    } else {
+                        Toast.makeText(this, "Codigo duplicado", Toast.LENGTH_SHORT).show();
+                    }
+                    clearItem();
                 } else {
-                    Toast.makeText(this, "Codigo duplicado", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Codigo incorrecto", Toast.LENGTH_SHORT).show();
                 }
-                clearItem();
-            } else {
-                Toast.makeText(this, "Codigo incorrecto", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
     private void shareList() {
         if (!myList.isEmpty()) {
-            String shareInfo = "";
+            StringBuilder bld = new StringBuilder();
             for (ItemInventario item : myList) {
-                shareInfo += item.getCode() + System.getProperty("line.separator");
+                bld.append(item.getCode());
+                bld.append(System.getProperty("line.separator"));
             }
+            String shareInfo = bld.toString();
 
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
