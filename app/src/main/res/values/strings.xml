@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Inventario NS</string>
+
+    <string name="action_inventario">Ver Inventario</string>
+    <string name="action_settings">Configuración</string>
+    <string name="action_scan">Scan</string>
+    <string name="action_add">Agregar</string>
+
+    <string name="label_ok">OK</string>
+    <string name="permission_camera_rationale">Camera permission is needed to show the camera preview.</string>
+    <string name="permission_read_external_storage">Read External Storage permission is needed.</string>
+
+    <string name="list_title">Mi Lista</string>
+
+    <string name="button_clear">Limpiar</string>
+    <string name="button_add">Agregar</string>
+
+    <string name="title_column_code">Código</string>
+    <string name="title_column_group">Grupo</string>
+    <string name="title_column_brand">Marca</string>
+</resources>

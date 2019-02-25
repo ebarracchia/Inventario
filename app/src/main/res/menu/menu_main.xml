@@ -1,0 +1,23 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.barracchia.inventario.ui.MainActivity">
+    <item
+        android:id="@+id/action_scan"
+        android:orderInCategory="100"
+        android:title="@string/action_scan"
+        app:showAsAction="always"
+        android:icon="@mipmap/camera"/>
+    <item
+        android:id="@+id/action_inventario"
+        android:orderInCategory="200"
+        android:title="@string/action_inventario"
+        app:showAsAction="always"
+        android:icon="@mipmap/file"/>
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        android:enabled="false"
+        app:showAsAction="never" />
+</menu>
