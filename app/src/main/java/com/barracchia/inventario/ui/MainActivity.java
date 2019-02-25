@@ -176,8 +176,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         if (id == R.id.action_inventario) {
-            Intent intent = new Intent(this, InventarioActivity.class);
-            startActivity(intent);
+            showInventario();
             return true;
         }
         if (id == R.id.action_scan) {
@@ -186,6 +185,18 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showInventario() {
+        // Check if the READ_EXTERNAL_STORAGE permission is already available.
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            // READ_EXTERNAL_STORAGE permission has not been granted.
+            requestReadExternalStoragePermission();
+        } else {
+            Intent intent = new Intent(this, InventarioActivity.class);
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -260,9 +271,30 @@ public class MainActivity extends AppCompatActivity {
     private void requestReadExternalStoragePermission() {
         Log.i(TAG, "READ_EXTERNAL_STORAGE permission has NOT been granted. Requesting permission.");
 
-        // Camera permission has not been granted yet. Request it directly.
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                REQUEST_READ_EXTERNAL_STORAGE);
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            // Provide an additional rationale to the user if the permission was not granted
+            // and the user would benefit from additional context for the use of the permission.
+            // For example if the user has previously denied the permission.
+            Log.i(TAG,
+                    "Displaying storage permission rationale to provide additional context.");
+            Snackbar.make(findViewById(android.R.id.content), R.string.permission_read_external_storage,
+                    Snackbar.LENGTH_INDEFINITE)
+                    .setAction(R.string.label_ok, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            ActivityCompat.requestPermissions(MainActivity.this,
+                                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                    REQUEST_READ_EXTERNAL_STORAGE);
+                        }
+                    })
+                    .show();
+        } else {
+
+            // Storage permission has not been granted yet. Request it directly.
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    REQUEST_READ_EXTERNAL_STORAGE);
+        }
     }
 
     private void showItem(String codigo, boolean fromScan) {
