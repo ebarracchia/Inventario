@@ -324,11 +324,11 @@ public class MainActivity extends AppCompatActivity {
                         myList.add(item);
                         myItemAdapter.updateItems(myList);
                     } else {
-                        Toast.makeText(this, "Codigo duplicado", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, R.string.code_duplicated, Toast.LENGTH_SHORT).show();
                     }
                     clearItem();
                 } else {
-                    Toast.makeText(this, "Codigo incorrecto", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.code_not_ok, Toast.LENGTH_SHORT).show();
                 }
             }
         }

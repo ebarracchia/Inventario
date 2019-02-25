@@ -7,8 +7,8 @@
     <string name="action_add">Agregar</string>
 
     <string name="label_ok">OK</string>
-    <string name="permission_camera_rationale">Camera permission is needed to show the camera preview.</string>
-    <string name="permission_read_external_storage">Read External Storage permission is needed.</string>
+    <string name="permission_camera_rationale">Es necesario aceptar el uso de la cámara para poder leer los códigos con la misma.</string>
+    <string name="permission_read_external_storage">El permiso para acceder al Almacenamiento debe ser aceptado.</string>
 
     <string name="list_title">Mi Lista</string>
 
@@ -18,4 +18,7 @@
     <string name="title_column_code">Código</string>
     <string name="title_column_group">Grupo</string>
     <string name="title_column_brand">Marca</string>
+
+    <string name="code_duplicated">Código duplicado</string>
+    <string name="code_not_ok">Código incorrecto</string>
 </resources>
