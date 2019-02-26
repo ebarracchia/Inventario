@@ -17,7 +17,7 @@ public class ItemInventario {
     private String description;
     private String remark;
 
-    public static List<ItemInventario> inventario;
+    private static List<ItemInventario> inventario;
 
     public ItemInventario(String group, String code, String brand, String description, String remark) {
         this.group = group;
@@ -62,7 +62,7 @@ public class ItemInventario {
 
     /**
      * Find item using code parameter
-     * @param code
+     * @param code 
      * @return
      */
     public static ItemInventario getByCodigo(String code) {
