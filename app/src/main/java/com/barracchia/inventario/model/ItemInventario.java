@@ -87,7 +87,7 @@ public class ItemInventario {
     }
 
     /**
-     * Get inventario list fitered by param
+     * Get inventario list filtered by param
      * @return
      */
     public static List<ItemInventario> getInventario(String filter) {

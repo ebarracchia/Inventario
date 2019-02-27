@@ -58,7 +58,7 @@ public class InventarioActivity extends AppCompatActivity {
         });
 
         lswList = findViewById(R.id.lvwList);
-        ViewGroup headerView = (ViewGroup) getLayoutInflater().inflate(R.layout.listview_item, lswList, false);
+        ViewGroup headerView = (ViewGroup) getLayoutInflater().inflate(R.layout.listview_header, lswList, false);
         lswList.addHeaderView(headerView);
         lswList.setClickable(true);
         lswList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

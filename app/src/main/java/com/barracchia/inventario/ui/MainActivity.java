@@ -2,9 +2,11 @@ package com.barracchia.inventario.ui;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -27,10 +29,13 @@ import android.widget.Toast;
 import com.barracchia.inventario.R;
 import com.barracchia.inventario.model.ItemInventario;
 import com.barracchia.inventario.utils.KeyboardUtil;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.opencsv.CSVReader;
 
 import java.io.File;
 import java.io.FileReader;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,6 +119,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 myList.clear();
                 myItemAdapter.updateItems(myList);
+
+                // Save to SharedPreferences
+                saveToSharedPreferences();
             }
         });
 
@@ -135,6 +143,10 @@ public class MainActivity extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
                 myList.remove(position);
                 myItemAdapter.updateItems(myList);
+
+                // Save to SharedPreferences
+                saveToSharedPreferences();
+
                 return true;
             }
         });
@@ -148,6 +160,10 @@ public class MainActivity extends AppCompatActivity {
                 shareList();
             }
         });
+
+        // Read from SharedPreferences
+        readFromSharedPreferences();
+        myItemAdapter.updateItems(myList);
 
         // Check if the READ_EXTERNAL_STORAGE permission is already available.
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -355,6 +371,9 @@ public class MainActivity extends AppCompatActivity {
                     if (!duplicated) {
                         myList.add(item);
                         myItemAdapter.updateItems(myList);
+
+                        // Save to SharedPreferences
+                        saveToSharedPreferences();
                     } else {
                         Toast.makeText(this, R.string.code_duplicated, Toast.LENGTH_SHORT).show();
                     }
@@ -364,6 +383,27 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    private void saveToSharedPreferences() {
+        try {
+            SharedPreferences appSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+            SharedPreferences.Editor prefsEditor = appSharedPrefs.edit();
+            Gson gson = new Gson();
+            String json = gson.toJson(myList);
+            prefsEditor.putString("MyList", json);
+            prefsEditor.apply();
+        } catch (Exception e) {}
+    }
+
+    private void readFromSharedPreferences() {
+        try {
+            SharedPreferences appSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+            Gson gson = new Gson();
+            String json = appSharedPrefs.getString("MyList", "");
+            Type type = new TypeToken<List<ItemInventario>>(){}.getType();
+            myList = gson.fromJson(json, type);
+        } catch (Exception e) {}
     }
 
     private void shareList() {
