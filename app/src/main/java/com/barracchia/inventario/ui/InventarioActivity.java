@@ -5,7 +5,6 @@ import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -17,7 +16,6 @@ import android.widget.TextView;
 import com.barracchia.inventario.R;
 import com.barracchia.inventario.model.ItemInventario;
 import com.barracchia.inventario.utils.KeyboardUtil;
-import com.google.zxing.common.StringUtils;
 
 public class InventarioActivity extends AppCompatActivity {
 
@@ -58,7 +56,7 @@ public class InventarioActivity extends AppCompatActivity {
         });
 
         lswList = findViewById(R.id.lvwList);
-        ViewGroup headerView = (ViewGroup) getLayoutInflater().inflate(R.layout.listview_header, lswList, false);
+        ViewGroup headerView = (ViewGroup) getLayoutInflater().inflate(R.layout.listview_inventario_header, lswList, false);
         lswList.addHeaderView(headerView);
         lswList.setClickable(true);
         lswList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

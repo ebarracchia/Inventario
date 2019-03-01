@@ -47,7 +47,7 @@ public class ItemAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = LayoutInflater.from(context).
-                    inflate(R.layout.listview_item, parent, false);
+                    inflate(R.layout.listview_main_item, parent, false);
         }
 
         LinearLayout renglon = ViewHolder.get(convertView, R.id.renglon);
