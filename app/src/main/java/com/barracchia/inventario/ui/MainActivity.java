@@ -229,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
             // READ_EXTERNAL_STORAGE permission has not been granted.
             requestReadExternalStoragePermission();
         } else {
-            String mUrl= "http://localhost:8000/inventario.csv";
+            String mUrl= "http://192.168.100.32:8000/inventario.csv";
             InputStreamVolleyRequest request = new InputStreamVolleyRequest(Request.Method.GET, mUrl,
                     new Response.Listener<byte[]>() {
                         @Override
