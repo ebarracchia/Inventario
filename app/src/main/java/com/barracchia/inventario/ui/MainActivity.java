@@ -28,8 +28,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HurlStack;
+import com.android.volley.toolbox.Volley;
 import com.barracchia.inventario.R;
 import com.barracchia.inventario.model.ItemInventario;
 import com.barracchia.inventario.utils.InputStreamVolleyRequest;
@@ -239,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
                                     outputStream = openFileOutput(name, Context.MODE_PRIVATE);
                                     outputStream.write(response);
                                     outputStream.close();
-                                    Toast.makeText(this, "Download complete.", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(MainActivity.this, "Download complete.", Toast.LENGTH_LONG).show();
                                 }
                             } catch (Exception e) {
                                 Log.d("KEY_ERROR", "UNABLE TO DOWNLOAD FILE");
