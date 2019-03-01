@@ -2,10 +2,13 @@
     <string name="app_name">Inventario NS</string>
 
     <string name="action_inventario">Ver Inventario</string>
+    <string name="action_download">Descargar CSV</string>
     <string name="action_settings">Configuración</string>
+    <string name="action_help">Ayuda</string>
     <string name="action_scan">Scan</string>
     <string name="action_add">Agregar</string>
 
+    <string name="label_help">Se debe copiar el archivo inventario.csv en la carpeta Descargas.</string>
     <string name="label_ok">OK</string>
     <string name="permission_camera_rationale">Es necesario aceptar el uso de la cámara para poder leer los códigos de barra.</string>
     <string name="permission_read_external_storage">El permiso para acceder al Almacenamiento debe ser aceptado.</string>
