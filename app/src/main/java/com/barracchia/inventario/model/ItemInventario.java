@@ -96,7 +96,9 @@ public class ItemInventario {
             for (ItemInventario item : ItemInventario.getInventario()) {
                 if (item.code.toUpperCase().contains(filter.toUpperCase()) ||
                         item.group.toUpperCase().contains(filter.toUpperCase()) ||
-                        item.brand.toUpperCase().contains(filter.toUpperCase()))
+                        item.brand.toUpperCase().contains(filter.toUpperCase()) ||
+                        item.description.toUpperCase().contains(filter.toUpperCase()) ||
+                        item.remark.toUpperCase().contains(filter.toUpperCase()))
                     result.add(item);
             }
             return result;

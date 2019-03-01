@@ -1,6 +1,7 @@
 package com.barracchia.inventario.ui;
 
 import android.content.Context;
+import android.support.annotation.LayoutRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import java.util.List;
 public class ItemAdapter extends BaseAdapter {
     private final Context context; //context
     private List<ItemInventario> items = Collections.emptyList(); //data source of the list adapter
+    private @LayoutRes int resource = R.layout.listview_main_item; //default resource
 
     //public constructor
     public ItemAdapter(Context context) {
@@ -26,6 +28,10 @@ public class ItemAdapter extends BaseAdapter {
     public void updateItems(List<ItemInventario> items) {
         this.items = items;
         notifyDataSetChanged();
+    }
+
+    public void setResource(@LayoutRes int resource) {
+        this.resource = resource;
     }
 
     @Override
@@ -47,7 +53,7 @@ public class ItemAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = LayoutInflater.from(context).
-                    inflate(R.layout.listview_main_item, parent, false);
+                    inflate(resource, parent, false);
         }
 
         LinearLayout renglon = ViewHolder.get(convertView, R.id.renglon);
@@ -62,6 +68,13 @@ public class ItemAdapter extends BaseAdapter {
         code.setText(currentItem.getCode());
         group.setText(currentItem.getGroup());
         brand.setText(currentItem.getBrand());
+
+        if (resource == R.layout.listview_inventario_item) {
+            TextView description = ViewHolder.get(convertView, R.id.text_view_item_description);
+            TextView remark = ViewHolder.get(convertView, R.id.text_view_item_remark);
+            description.setText(currentItem.getDescription());
+            remark.setText(currentItem.getRemark());
+        }
 
         // returns the view for the current row
         return convertView;

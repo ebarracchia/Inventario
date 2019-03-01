@@ -1,6 +1,7 @@
 package com.barracchia.inventario.ui;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -26,14 +27,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.barracchia.inventario.R;
 import com.barracchia.inventario.model.ItemInventario;
+import com.barracchia.inventario.utils.InputStreamVolleyRequest;
 import com.barracchia.inventario.utils.KeyboardUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.opencsv.CSVReader;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -191,6 +197,16 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
+        if (id == R.id.action_help) {
+            Snackbar.make(findViewById(android.R.id.content), R.string.label_help,
+                    Snackbar.LENGTH_LONG)
+                    .show();
+            return true;
+        }
+        if (id == R.id.action_download) {
+            downloadCSV();
+            return true;
+        }
         if (id == R.id.action_inventario) {
             showInventario();
             return true;
@@ -201,6 +217,45 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void downloadCSV() {
+        // Check if the READ_EXTERNAL_STORAGE permission is already available.
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            // READ_EXTERNAL_STORAGE permission has not been granted.
+            requestReadExternalStoragePermission();
+        } else {
+            String mUrl= "http://localhost:8000/inventario.csv";
+            InputStreamVolleyRequest request = new InputStreamVolleyRequest(Request.Method.GET, mUrl,
+                    new Response.Listener<byte[]>() {
+                        @Override
+                        public void onResponse(byte[] response) {
+                            try {
+                                if (response!=null) {
+
+                                    FileOutputStream outputStream;
+                                    String name="inventario.csv";
+                                    outputStream = openFileOutput(name, Context.MODE_PRIVATE);
+                                    outputStream.write(response);
+                                    outputStream.close();
+                                    Toast.makeText(this, "Download complete.", Toast.LENGTH_LONG).show();
+                                }
+                            } catch (Exception e) {
+                                Log.d("KEY_ERROR", "UNABLE TO DOWNLOAD FILE");
+                                e.printStackTrace();
+                            }
+                        }
+                    } ,new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                }
+            }, null);
+            RequestQueue mRequestQueue = Volley.newRequestQueue(getApplicationContext(), new HurlStack());
+            mRequestQueue.add(request);
+        }
     }
 
     private void showInventario() {

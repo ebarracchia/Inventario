@@ -73,6 +73,7 @@ public class InventarioActivity extends AppCompatActivity {
             }
         });
         myItemAdapter = new ItemAdapter(this);
+        myItemAdapter.setResource(R.layout.listview_inventario_item);
         lswList.setAdapter(myItemAdapter);
         myItemAdapter.updateItems(ItemInventario.getInventario());
 
