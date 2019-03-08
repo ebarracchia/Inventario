@@ -1,8 +1,11 @@
 package com.barracchia.inventario.model;
 
+import android.content.res.Resources;
 import android.os.Environment;
 import android.text.TextUtils;
 
+import com.barracchia.inventario.MyApplication;
+import com.barracchia.inventario.R;
 import com.opencsv.CSVReader;
 
 import java.io.File;
@@ -75,6 +78,13 @@ public class ItemInventario {
     }
 
     /**
+     * Clear inventario list
+     */
+    public static void clearInventario() {
+        inventario = null;
+    }
+
+    /**
      * Get inventario list
      * @return
      */
@@ -114,7 +124,7 @@ public class ItemInventario {
             //Get the path of external storage directory. Here we used download directory to read CSV
             File downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
             //Read the specific PDF document from the download directory
-            File filePath = new File(downloadDir + "/inventario.csv");
+            File filePath = new File(downloadDir + "/" + MyApplication.getContext().getResources().getString(R.string.file_name));
 
             CSVReader reader = new CSVReader(new FileReader(filePath));
             String[] nextLine;

@@ -24,4 +24,11 @@
 
     <string name="code_duplicated">Código duplicado</string>
     <string name="code_not_ok">Código incorrecto</string>
+
+    <string name="download_ok">Descarga exitosa</string>
+    <string name="download_error">Problemas para descargar el archivo</string>
+
+    <string name="file_name">inventario.csv</string>
+    <string name="file_url">https://newsan-ad.herokuapp.com/inventario</string>
+
 </resources>
