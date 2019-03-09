@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -34,6 +33,7 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.Volley;
 import com.barracchia.inventario.R;
 import com.barracchia.inventario.model.ItemInventario;
+import com.barracchia.inventario.utils.FileSystemUtil;
 import com.barracchia.inventario.utils.InputStreamVolleyRequest;
 import com.barracchia.inventario.utils.KeyboardUtil;
 import com.google.gson.Gson;
@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CAMERA = 0;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static final int REQUEST_SCAN = 8;
+    private static final int REQUEST_SETTINGS = 99;
 
     private List<ItemInventario> myList = new ArrayList<>();
 
@@ -179,12 +180,7 @@ public class MainActivity extends AppCompatActivity {
         myItemAdapter.updateItems(myList);
 
         // Check if the EXTERNAL_STORAGE permission is already available.
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            // EXTERNAL_STORAGE permission has not been granted.
-            requestExternalStoragePermission();
-        }
+        externalStoragePermissionEnabled();
     }
 
     @Override
@@ -203,6 +199,7 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            showSettings();
             return true;
         }
         if (id == R.id.action_help) {
@@ -228,13 +225,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void downloadCSV() {
-        // Check if the EXTERNAL_STORAGE permission is already available.
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            // EXTERNAL_STORAGE permission has not been granted.
-            requestExternalStoragePermission();
-        } else {
+        if (externalStoragePermissionEnabled()) {
             String mUrl= getString(R.string.file_url);
             request = new InputStreamVolleyRequest(Request.Method.GET, mUrl,
                     new Response.Listener<byte[]>() {
@@ -243,16 +234,6 @@ public class MainActivity extends AppCompatActivity {
                             HashMap<String, Object> map = new HashMap<String, Object>();
                             try {
                                 if (response!=null) {
-
-                                    // Old code
-                                    //FileOutputStream outputStream;
-                                    //String name = getString(R.string.file_name);
-                                    //outputStream = openFileOutput(name, Context.MODE_PRIVATE);
-                                    //outputStream.write(response);
-                                    //outputStream.close();
-                                    //Toast.makeText(MainActivity.this, R.string.download_ok, Toast.LENGTH_LONG).show();
-
-                                    // New code
                                     //Read file name from headers
                                     String content = request.responseHeaders.get("Content-Disposition");
                                     String[] arrTag = content.split("=");
@@ -269,12 +250,9 @@ public class MainActivity extends AppCompatActivity {
                                     try{
                                         long lenghtOfFile = response.length;
 
-                                        //covert reponse to input stream
+                                        //covert response to input stream
                                         InputStream input = new ByteArrayInputStream(response);
-                                        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-                                        //File file = new File(path, filename);
-
-                                        File file = new File(path + "/" + filename);
+                                        File file = FileSystemUtil.getFilePath(filename);
 
                                         map.put("resume_path", file.toString());
                                         BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(file));
@@ -321,14 +299,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void showSettings() {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivityForResult(intent, REQUEST_SETTINGS);
+    }
+
     private void showInventario() {
-        // Check if the EXTERNAL_STORAGE permission is already available.
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            // EXTERNAL_STORAGE permission has not been granted.
-            requestExternalStoragePermission();
-        } else {
+        if (externalStoragePermissionEnabled()) {
             Intent intent = new Intent(this, InventarioActivity.class);
             startActivity(intent);
         }
@@ -349,13 +326,7 @@ public class MainActivity extends AppCompatActivity {
      * Called when the 'show camera' button is clicked.
      */
     public void showCamera() {
-        Log.i(TAG, "Show camera button pressed. Checking permission.");
-        // Check if the Camera permission is already available.
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Camera permission has not been granted.
-            requestCameraPermission();
-        } else {
+        if (CameraPermissionEnabled()) {
             // Camera permissions is already available, show the camera preview.
             Log.i(TAG,
                     "CAMERA permission has already been granted. Displaying camera preview.");
@@ -398,6 +369,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private boolean CameraPermissionEnabled() {
+        // Check if the Camera permission is already available.
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Camera permission has not been granted.
+            requestCameraPermission();
+            return false;
+        }
+        else
+            return true;
+    }
+
     /**
      * Requests the EXTERNAL_STORAGE permission.
      * If the permission has been denied previously, a SnackBar will prompt the user to grant the
@@ -432,6 +415,19 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     REQUEST_EXTERNAL_STORAGE);
         }
+    }
+
+    private boolean externalStoragePermissionEnabled() {
+        // Check if the EXTERNAL_STORAGE permission is already available.
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            // EXTERNAL_STORAGE permission has not been granted.
+            requestExternalStoragePermission();
+            return false;
+        }
+        else
+            return true;
     }
 
     private void showItem(String codigo, boolean fromScan) {
@@ -471,13 +467,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addItem() {
-        // Check if the EXTERNAL_STORAGE permission is already available.
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            // EXTERNAL_STORAGE permission has not been granted.
-            requestExternalStoragePermission();
-        } else {
+        if (externalStoragePermissionEnabled()) {
             if (!TextUtils.isEmpty(edtCode.getText())) {
                 ItemInventario item = ItemInventario.getByCodigo(String.valueOf(edtCode.getText()));
                 if (item != null) {
