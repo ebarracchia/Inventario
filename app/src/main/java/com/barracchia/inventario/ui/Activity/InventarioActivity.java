@@ -1,4 +1,4 @@
-package com.barracchia.inventario.ui;
+package com.barracchia.inventario.ui.Activity;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.barracchia.inventario.R;
 import com.barracchia.inventario.model.ItemInventario;
+import com.barracchia.inventario.ui.Adapter.ItemAdapter;
 import com.barracchia.inventario.utils.KeyboardUtil;
 
 public class InventarioActivity extends AppCompatActivity {

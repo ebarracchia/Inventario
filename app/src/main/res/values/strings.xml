@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">Inventario NS</string>
-    <string name="app_name_inventario">Inventario NS - Lista</string>
-    <string name="app_name_scan">Inventario NS - Cámara</string>
-    <string name="app_name_settings">Inventario NS - Configuración</string>
+    <string name="app_name_inventario">Lista</string>
+    <string name="app_name_scan">Cámara</string>
+    <string name="app_name_settings">Configuración</string>
 
+    <!-- Strings related to ActionBar menu -->
     <string name="action_inventario">Ver Inventario</string>
     <string name="action_download">Descargar CSV</string>
     <string name="action_settings">Configuración</string>
@@ -13,6 +14,7 @@
 
     <string name="label_help">Se debe copiar el archivo inventario.csv en la carpeta Descargas o descargarlo de Internet.</string>
     <string name="label_ok">OK</string>
+
     <string name="permission_camera_rationale">Es necesario aceptar el uso de la cámara para poder leer los códigos de barra.</string>
     <string name="permission_read_external_storage">El permiso para acceder al Almacenamiento debe ser aceptado.</string>
 
@@ -34,4 +36,9 @@
     <string name="file_name">inventario.csv</string>
     <string name="file_url">https://newsan-ad.herokuapp.com/inventario</string>
 
+    <!-- Strings related to Preferences -->
+    <string name="pref_validate_title">Validar código ingresado</string>
+    <string name="pref_validate_message">Si el código debe existir en la listo o no</string>
+    <string name="pref_url_title">Url descarga</string>
+    <string name="pref_url_message">Url donde se encuentra el archivo de inventario</string>
 </resources>

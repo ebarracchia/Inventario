@@ -1,4 +1,4 @@
-package com.barracchia.inventario.ui;
+package com.barracchia.inventario.ui.Adapter;
 
 import android.content.Context;
 import android.support.annotation.LayoutRes;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.barracchia.inventario.R;
 import com.barracchia.inventario.model.ItemInventario;
+import com.barracchia.inventario.ui.Other.ViewHolder;
 
 import java.util.Collections;
 import java.util.List;

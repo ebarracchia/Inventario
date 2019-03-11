@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <android.support.v7.preference.SwitchPreferenceCompat
+        android:defaultValue="true"
+        android:key="pref_validate"
+        android:title="@string/pref_validate_title"
+        android:summary="@string/pref_validate_message"/>
+
+    <android.support.v7.preference.EditTextPreference
+        android:capitalize="words"
+        android:title="@string/pref_url_title"
+        android:summary="@string/pref_url_message"
+        android:dialogMessage="@string/pref_url_message"
+        android:defaultValue="@string/file_url"
+        android:inputType="textCapWords"
+        android:key="pref_url"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true" />
+</PreferenceScreen>

@@ -1,4 +1,4 @@
-package com.barracchia.inventario.ui;
+package com.barracchia.inventario.ui.Activity;
 
 import android.Manifest;
 import android.content.Intent;
@@ -33,9 +33,11 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.Volley;
 import com.barracchia.inventario.R;
 import com.barracchia.inventario.model.ItemInventario;
+import com.barracchia.inventario.ui.Adapter.ItemAdapter;
 import com.barracchia.inventario.utils.FileSystemUtil;
 import com.barracchia.inventario.utils.InputStreamVolleyRequest;
 import com.barracchia.inventario.utils.KeyboardUtil;
+import com.barracchia.inventario.utils.SharedPreferencesUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -57,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CAMERA = 0;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static final int REQUEST_SCAN = 8;
-    private static final int REQUEST_SETTINGS = 99;
 
     private List<ItemInventario> myList = new ArrayList<>();
 
@@ -178,6 +179,9 @@ public class MainActivity extends AppCompatActivity {
         // Read from SharedPreferences
         readFromSharedPreferences();
         myItemAdapter.updateItems(myList);
+
+        // Settings
+        //Toast.makeText(this, String.valueOf(SharedPreferencesUtil.getSharedPreference(SettingsActivity.KEY_PREF_VALIDATE, true)), Toast.LENGTH_SHORT).show();
 
         // Check if the EXTERNAL_STORAGE permission is already available.
         externalStoragePermissionEnabled();
@@ -301,7 +305,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showSettings() {
         Intent intent = new Intent(this, SettingsActivity.class);
-        startActivityForResult(intent, REQUEST_SETTINGS);
+        startActivity(intent);
     }
 
     private void showInventario() {

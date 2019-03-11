@@ -1,4 +1,4 @@
-package com.barracchia.inventario.ui;
+package com.barracchia.inventario.ui.Other;
 
 import android.util.SparseArray;
 import android.view.View;
