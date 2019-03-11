@@ -1,4 +1,3 @@
-# Inventario
 Inventario NS
 =============
 
