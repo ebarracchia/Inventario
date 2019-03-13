@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Inventario NS</string>
-    <string name="app_name_inventario">Lista</string>
+    <string name="app_name_inventario">Lista completa</string>
     <string name="app_name_scan">Cámara</string>
     <string name="app_name_settings">Configuración</string>
 
@@ -38,7 +38,7 @@
 
     <!-- Strings related to Preferences -->
     <string name="pref_validate_title">Validar código ingresado</string>
-    <string name="pref_validate_message">Si el código debe existir en la listo o no</string>
+    <string name="pref_validate_message">Si el código debe existir en la lista o no</string>
     <string name="pref_url_title">Url descarga</string>
     <string name="pref_url_message">Url donde se encuentra el archivo de inventario</string>
 </resources>

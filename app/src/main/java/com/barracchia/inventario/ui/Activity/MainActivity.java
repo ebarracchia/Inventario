@@ -31,6 +31,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.Volley;
+import com.barracchia.inventario.MyApplication;
 import com.barracchia.inventario.R;
 import com.barracchia.inventario.model.ItemInventario;
 import com.barracchia.inventario.ui.Adapter.ItemAdapter;
@@ -180,9 +181,6 @@ public class MainActivity extends AppCompatActivity {
         readFromSharedPreferences();
         myItemAdapter.updateItems(myList);
 
-        // Settings
-        //Toast.makeText(this, String.valueOf(SharedPreferencesUtil.getSharedPreference(SettingsActivity.KEY_PREF_VALIDATE, true)), Toast.LENGTH_SHORT).show();
-
         // Check if the EXTERNAL_STORAGE permission is already available.
         externalStoragePermissionEnabled();
     }
@@ -230,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void downloadCSV() {
         if (externalStoragePermissionEnabled()) {
-            String mUrl= getString(R.string.file_url);
+            String mUrl= SharedPreferencesUtil.getSharedPreference(SettingsActivity.KEY_PREF_URL, MyApplication.getContext().getResources().getString(R.string.file_url));
             request = new InputStreamVolleyRequest(Request.Method.GET, mUrl,
                     new Response.Listener<byte[]>() {
                         @Override
@@ -265,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
                                         long total = 0;
 
                                         int count = input.read(data);
-                                        while (input.read(data) != -1) {
+                                        while (count != -1) {
                                             total += count;
                                             output.write(data, 0, count);
 
@@ -474,6 +472,15 @@ public class MainActivity extends AppCompatActivity {
         if (externalStoragePermissionEnabled()) {
             if (!TextUtils.isEmpty(edtCode.getText())) {
                 ItemInventario item = ItemInventario.getByCodigo(String.valueOf(edtCode.getText()));
+
+                if (item == null) {
+                    boolean validate = SharedPreferencesUtil.getSharedPreference(SettingsActivity.KEY_PREF_VALIDATE, true);
+                    if (!validate) {
+                        item = new ItemInventario("", String.valueOf(edtCode.getText()).toUpperCase(), "", "", "");
+                    }
+
+                }
+
                 if (item != null) {
                     // Check if duplicated item
                     boolean duplicated = false;
