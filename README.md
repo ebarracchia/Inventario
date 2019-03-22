@@ -17,10 +17,10 @@ Features
 Test
 ----
 Use the following images to test the app...
+![ING000001](/images/ING000001.png)
+![ING000004](/images/ING000004.png)
 
-![GitHub Logo](/images/ING000001.png)
-
-More to come.
+More to come :smirk:.
 EB
 
 
