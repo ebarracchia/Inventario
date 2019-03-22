@@ -14,6 +14,12 @@ Features
 - Check non existing values
 - Remember your list
 
+Test
+----
+Use the following images to test the app...
+
+![GitHub Logo](/images/ING000001.png)
+
 More to come.
 EB
 
